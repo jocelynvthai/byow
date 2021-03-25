@@ -1,0 +1,91 @@
+Classes and Data Structures
+
+Room
+This class represents a room in the world. Its constructor generates a room of random width and height and gives it a random position in the world.
+Instance Variables
+width: holds width of room
+height: holds height of room
+start: bottom left corner position of room
+middle: middle position of room
+r: random object to call r.nextInt on
+tile: TETile of the room
+world: 2d array storing the tiles of the world
+positions: list holding all of the coordinates that comprise the room
+wallPositions: coordinates of the walls of a room
+
+
+
+Hallway
+Represents a hallway in the world, connecting at least two rooms together.
+Instance Variables
+start: stores the start position of the hallway
+end: stores the end position of the hallway
+tile: the TETile of the hallway
+world: holds the 2d array of the tiles of the world in their respective positions
+positions: holds the coordinates of the hallway in the world
+
+
+
+Move
+Represents an avatar that can explore the world through keyboard or string commands.
+Instance Variables
+start: stores the start position of the avatar
+world: holds the 2d array of the tiles of the world in their respective positions
+avatarTile: the TETile representing the avatar
+worldTile: the TETile representing the floor of the world
+newPosition: the next Position of the avatar following a move command if the position is not a wall
+lastPosition: the previous Position of the avatar before a move command
+currentPosition: the current Position of the avatar
+userInput: the String representation of the keyboard move commands.
+
+
+Position
+Represents a (X, Y) coordinate of the world.
+Instance Variables
+x: x position of the coordinate
+y: y position of the coordinate
+
+
+Engine
+Handles user interaction with the world by taking in input commands from the user and rendering the appropriate world state.
+Instance Variables
+ter: the TERenderer used to display the world to the screen through renderFrame();
+world: holds the 2d array of the tiles of the world in their respective positions
+r: random object to call r.nextInt on
+rooms: list of the Room objects in the world
+hallways: list of the Hallway objects in the world
+enteredMenuOption: boolean value indicating whether or not the user has entered a menu option (used to determine when to display the menu)
+loadedSavedWorld: boolean value indicating whether or not the engine is functioning on a world that has been loaded
+changedTile: boolean value indicating whether or not the user has changed the tile appearance
+avatar: holds the Move object of the avatar
+hunter: holds the Move object of the chasing entity (ambition points)
+door: holds the position of the door in the world
+startPosition: starting position of the user’s avatar
+g: a graph object representing all of the positions in the world. Used to compute the shortest path between any two Position objects, using A*
+
+
+BYOWGraph
+Graph of positions representing the world. Used in the A* algorithm to find shortest path between user’s avatar and the hunter avatar which chases the user avatar.
+Instance Variables
+world: holds the 2d array of the tiles of the world in their respective positions
+
+
+AStarSolver
+Computes shortest path between any two Position objects.
+Instance Variables
+distTo: hashmap mapping a Position object to its respective distance from Source
+endgeTo: hashmap mapping a Position object to its edge, connecting it to the path that ultimately starts at Source
+fringe: priority queue holding Position objects
+
+Algorithms
+Engine
+liveGamePlay
+liveGamePlay continuously retrieves user interactions, controls the hunter’s (avatar which chases the user’s avatar) movements, and renders everything to the frame. The hunter’s movements are along the path that is given from the list returned by AStarSolver.solution().
+
+interactWithKeyboard
+interactWithKeyboard (1) creates a main menu, (2) retrieves seed from the user, (3) calls interactWithInputString on the seed to render the appropriate world, and (4) handles the live game play by moving the avatar, hunter, and controlling the heads up display.
+
+interactWithInputString
+interactWithInputString renders the appropriate random world given an input String. It sets the rooms, hallways, and door, and adds the user’s avatar and hunter to the world. interactWithInputString also instantiates a BYOWGraph which is used by AStarSolver.
+
+
